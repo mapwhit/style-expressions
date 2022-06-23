@@ -15,10 +15,6 @@
       "isZoomConstant": true,
       "type": "string"
     },
-    "outputs": ["", "0", "a"],
-    "serialized": [
-      "to-string",
-      ["get", "p"]
-    ]
+    "outputs": ["", "0", "a"]
   }
 }

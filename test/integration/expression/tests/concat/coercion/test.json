@@ -8,7 +8,6 @@
       "isZoomConstant": true,
       "type": "string"
     },
-    "outputs": ["a1true"],
-    "serialized": ["concat", ["get", "a"], ["get", "1"], ["get", "true"]]
+    "outputs": ["a1true"]
   }
 }

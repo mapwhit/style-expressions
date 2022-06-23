@@ -43,11 +43,6 @@
           }
         ]
       }
-    ],
-    "serialized": [
-      "format",
-      ["coalesce", ["get", "q"], ["get", "p"]],
-      {}
     ]
   }
 }

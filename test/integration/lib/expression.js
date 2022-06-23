@@ -91,8 +91,7 @@ export function run(implementation, options, runExpressionTest) {
       if (process.env.UPDATE) {
         fixture.expected = {
           compiled: result.compiled,
-          outputs: stripPrecision(result.outputs),
-          serialized: result.serialized
+          outputs: stripPrecision(result.outputs)
         };
 
         delete fixture.metadata;
@@ -105,16 +104,7 @@ export function run(implementation, options, runExpressionTest) {
       const compileOk = deepEqual(result.compiled, expected.compiled);
       const evalOk = compileOk && deepEqual(result.outputs, expected.outputs);
 
-      let recompileOk = true;
-      let roundTripOk = true;
-      let serializationOk = true;
-      if (expected.compiled.result !== 'error') {
-        serializationOk = compileOk && deepEqual(expected.serialized, result.serialized);
-        recompileOk = compileOk && deepEqual(result.recompiled, expected.compiled);
-        roundTripOk = recompileOk && deepEqual(result.roundTripOutputs, expected.outputs);
-      }
-
-      params.ok = compileOk && evalOk && recompileOk && roundTripOk && serializationOk;
+      params.ok = compileOk && evalOk;
 
       const diffOutput = {
         text: '',
@@ -145,12 +135,6 @@ export function run(implementation, options, runExpressionTest) {
       if (!compileOk) {
         diffJson('Compiled', expected.compiled, result.compiled);
       }
-      if (compileOk && !serializationOk) {
-        diffJson('Serialized', expected.serialized, result.serialized);
-      }
-      if (compileOk && !recompileOk) {
-        diffJson('Serialized and re-compiled', expected.compiled, result.recompiled);
-      }
 
       const diffOutputs = testOutputs => {
         return expected.outputs
@@ -169,11 +153,6 @@ export function run(implementation, options, runExpressionTest) {
         diffOutput.text += differences;
         diffOutput.html += differences;
       }
-      if (recompileOk && !roundTripOk) {
-        const differences = `\nRoundtripped through serialize()\n${diffOutputs(result.roundTripOutputs)}\n`;
-        diffOutput.text += differences;
-        diffOutput.html += differences;
-      }
 
       params.difference = diffOutput.html;
       if (diffOutput.text) {
@@ -181,7 +160,6 @@ export function run(implementation, options, runExpressionTest) {
       }
 
       params.expression = compactStringify(fixture.expression);
-      params.serialized = compactStringify(result.serialized);
 
       done();
     } catch (e) {

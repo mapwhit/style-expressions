@@ -72,7 +72,7 @@ expressionSuite('js', { tests, testReporter: process.env.TEST_REPORTER }, fixtur
     }
   };
 
-  const result = { compiled: {}, recompiled: {} };
+  const result = { compiled: {} };
   const expression = (() => {
     if (isFunction(fixture.expression)) {
       return createPropertyExpression(convertFunction(fixture.expression, spec), spec);
@@ -81,14 +81,6 @@ expressionSuite('js', { tests, testReporter: process.env.TEST_REPORTER }, fixtur
   })();
 
   result.outputs = evaluateExpression(expression, result.compiled);
-  if (expression.result === 'success') {
-    result.serialized = expression.value._styleExpression.expression.serialize();
-    result.roundTripOutputs = evaluateExpression(createPropertyExpression(result.serialized, spec), result.recompiled);
-    // Type is allowed to change through serialization
-    // (eg "array" -> "array<number, 3>")
-    // Override the round-tripped type here so that the equality check passes
-    result.recompiled.type = result.compiled.type;
-  }
 
   return result;
 });

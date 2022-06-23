@@ -16,7 +16,6 @@
       [0],
       [],
       [0]
-    ],
-    "serialized": ["array", "number", null, ["get", "x"], ["literal", [0]]]
+    ]
   }
 }

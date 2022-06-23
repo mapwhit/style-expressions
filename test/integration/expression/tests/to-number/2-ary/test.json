@@ -28,7 +28,6 @@
       -1,
       0,
       0
-    ],
-    "serialized": ["to-number", ["get", "x"], ["get", "y"]]
+    ]
   }
 }
