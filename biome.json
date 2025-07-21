@@ -38,16 +38,19 @@
       "recommended": true,
       "correctness": {
         "noUndeclaredVariables": "error",
-        "noUnusedVariables": "error"
+        "noUnusedFunctionParameters": "off",
+        "noUnusedVariables": "off"
       },
       "complexity": {
-        "noForEach": "off"
+        "noForEach": "off",
+        "useLiteralKeys": "off"
       },
       "style": {
         "noParameterAssign": "off",
-        "useDefaultParameterLast": "error",
+        "useDefaultParameterLast": "off",
         "useSingleVarDeclarator": "error",
         "noUnusedTemplateLiteral": "error",
+        "useNodejsImportProtocol": "off",
         "useNumberNamespace": "error",
         "noUselessElse": "error"
       },
@@ -55,7 +58,9 @@
         "noDelete": "off"
       },
       "suspicious": {
-        "noAssignInExpressions": "off"
+        "noAssignInExpressions": "off",
+        "noGlobalIsNan": "off",
+        "noShadowRestrictedNames": "off"
       }
     }
   }

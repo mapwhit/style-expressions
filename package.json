@@ -11,16 +11,22 @@
     "type": "git",
     "url": "git+https://github.com/mapwhit/style-expressions.git"
   },
-  "type": "module",
-  "exports": "./lib/style-expressions.js",
   "license": "BSD-3-Clause",
   "keywords": [
     "style-expressions",
     ""
   ],
-  "dependencies": {},
+  "dependencies": {
+    "@mapbox/unitbezier": "^0.0.1",
+    "@pirxpilot/nanoassert": "^1.0.1",
+    "csscolorparser": "^1.0.3"
+  },
   "devDependencies": {
-    "@biomejs/biome": "2.0.5"
+    "@biomejs/biome": "2.0.5",
+    "sinon": "^21.0.0"
+  },
+  "browser": {
+    "assert": "@pirxpilot/nanoassert"
   },
   "scripts": {
     "test": "make check"
