@@ -1,0 +1,32 @@
+{
+  "name": "@mapwhit/style-expressions",
+  "version": "0.0.0",
+  "description": "Process expressions in map style.",
+  "author": {
+    "name": "Natalia Kowalczyk",
+    "email": "melitele@furkot.com",
+    "url": "https://melitele.me"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mapwhit/style-expressions.git"
+  },
+  "type": "module",
+  "exports": "./lib/style-expressions.js",
+  "license": "BSD-3-Clause",
+  "keywords": [
+    "style-expressions",
+    ""
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@biomejs/biome": "2.0.5"
+  },
+  "scripts": {
+    "test": "make check"
+  },
+  "files": [
+    "index.js",
+    "lib"
+  ]
+}
