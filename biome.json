@@ -29,7 +29,7 @@
   },
   "json": {
     "formatter": {
-      "expand": "always"
+      "enabled": false
     }
   },
   "linter": {
@@ -43,6 +43,7 @@
       },
       "complexity": {
         "noForEach": "off",
+        "useArrowFunction": "off",
         "useLiteralKeys": "off"
       },
       "style": {
@@ -52,7 +53,8 @@
         "noUnusedTemplateLiteral": "error",
         "useNodejsImportProtocol": "off",
         "useNumberNamespace": "error",
-        "noUselessElse": "error"
+        "noUselessElse": "error",
+        "useTemplate": "off"
       },
       "performance": {
         "noDelete": "off"
