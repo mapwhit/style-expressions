@@ -17,8 +17,8 @@ expressionSuite.run('js', { tests, testReporter: process.env.TEST_REPORTER }, fi
     spec['property-type'] = 'data-driven';
   }
 
-  if (!spec['expression']) {
-    spec['expression'] = {
+  if (!spec.expression) {
+    spec.expression = {
       interpolated: true,
       parameters: ['zoom', 'feature']
     };

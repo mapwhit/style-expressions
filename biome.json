@@ -42,8 +42,7 @@
         "noUnusedVariables": "error"
       },
       "complexity": {
-        "noForEach": "off",
-        "useLiteralKeys": "off"
+        "noForEach": "off"
       },
       "style": {
         "noParameterAssign": "off",
