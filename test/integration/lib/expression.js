@@ -1,7 +1,7 @@
-const path = require('path');
+const path = require('node:path');
 const harness = require('./harness');
 const diff = require('diff');
-const fs = require('fs');
+const fs = require('node:fs');
 const compactStringify = require('json-stringify-pretty-compact');
 
 // we have to handle this edge case here because we have test fixtures for this

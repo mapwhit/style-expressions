@@ -1,7 +1,7 @@
-const path = require('path');
+const path = require('node:path');
 const colors = require('chalk');
-const { readFileSync } = require('fs');
-const { readFile } = require('fs/promises');
+const { readFileSync } = require('node:fs');
+const { readFile } = require('node:fs/promises');
 
 module.exports = () => {
   // /test/integration

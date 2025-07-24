@@ -61,5 +61,17 @@
         "noShadowRestrictedNames": "off"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["test/**/*.js"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useNodejsImportProtocol": "error"
+          }
+        }
+      }
+    }
+  ]
 }
