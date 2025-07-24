@@ -39,7 +39,7 @@
       "correctness": {
         "noUndeclaredVariables": "error",
         "noUnusedFunctionParameters": "off",
-        "noUnusedVariables": "off"
+        "noUnusedVariables": "error"
       },
       "complexity": {
         "noForEach": "off",

@@ -7,7 +7,6 @@ const { promisify } = require('node:util');
 const colors = require('chalk');
 const template = require('lodash.template');
 const shuffler = require('shuffle-seed');
-const { report } = require('node:process');
 
 module.exports = harness;
 
