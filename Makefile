@@ -10,7 +10,7 @@ test:
 	node --test $(TEST_OPTS) "test/unit/**/*.test.js"
 
 test-integration:
-	node test/expression.test.js
+	TEST_REPORTER=dot node test/expression.test.js
 
 test-cov: TEST_OPTS := --experimental-test-coverage
 test-cov: test
