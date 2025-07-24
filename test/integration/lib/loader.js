@@ -110,8 +110,8 @@ module.exports = () => {
       sprite += '@2x';
     }
     const [json, image] = await Promise.all([
-      load(integrationPath, sprite + '.json'),
-      load(integrationPath, sprite + '.png')
+      load(integrationPath, `${sprite}.json`),
+      load(integrationPath, `${sprite}.png`)
     ]);
     return { json: JSON.parse(json.toString()), image: toArrayBuffer(image) };
   }

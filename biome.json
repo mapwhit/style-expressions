@@ -51,8 +51,7 @@
         "noUnusedTemplateLiteral": "error",
         "useNodejsImportProtocol": "off",
         "useNumberNamespace": "error",
-        "noUselessElse": "error",
-        "useTemplate": "off"
+        "noUselessElse": "error"
       },
       "performance": {
         "noDelete": "off"
