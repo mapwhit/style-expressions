@@ -1,15 +1,15 @@
-const path = require('node:path');
-const colors = require('chalk');
-const { readFileSync } = require('node:fs');
-const { readFile } = require('node:fs/promises');
+import { readFileSync } from 'node:fs';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+import colors from 'chalk';
 
-module.exports = () => {
+export default () => {
   // /test/integration
-  const integrationPath = path.join(__dirname, '..');
+  const integrationPath = path.join(import.meta.dirname, '..');
   // mapbox-gl-styles -> /test/integration/node_modules/mapbox-gl-styles
-  const mapboxGLStylesPath = path.join(path.dirname(require.resolve('mapbox-gl-styles')), '..');
+  const mapboxGLStylesPath = path.join(path.dirname(import.meta.resolve('mapbox-gl-styles')), '..');
   // mvt-fixtures -> /test/integration/node_modules/@mapbox/mvt-fixtures
-  const mapboxMVTFixturesPath = path.join(path.dirname(require.resolve('@mapbox/mvt-fixtures')), '..');
+  const mapboxMVTFixturesPath = path.join(path.dirname(import.meta.resolve('@mapbox/mvt-fixtures')), '..');
 
   function localizeURL(url) {
     return url.replace(/^local:\/\//, '');

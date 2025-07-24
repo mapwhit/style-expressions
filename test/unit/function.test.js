@@ -1,6 +1,6 @@
-const test = require('node:test');
-const { createFunction } = require('../../lib/function');
-const { Color, Formatted } = require('../../lib/expression');
+import test from 'node:test';
+import { Color, Formatted } from '../../lib/expression/index.js';
+import { createFunction } from '../../lib/function/index.js';
 
 test.beforeEach(t => {
   t.assert.equalWithPrecision = assertEqualWithPrecision;

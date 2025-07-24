@@ -1,1 +1,1 @@
-module.exports.expression = require('./lib/expression');
+export { run as expression } from './lib/expression.js';

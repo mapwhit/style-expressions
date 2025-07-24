@@ -1,5 +1,5 @@
-const test = require('node:test');
-const Color = require('../../../lib/util/color');
+import test from 'node:test';
+import Color from '../../../lib/util/color.js';
 
 test('Color.parse', t => {
   t.assert.deepEqual(Color.parse('red'), new Color(1, 0, 0, 1));

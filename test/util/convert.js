@@ -1,6 +1,5 @@
-const assert = require('node:assert');
-
-module.exports = convertFunction;
+import assert from 'node:assert';
+export default convertFunction;
 
 function convertLiteral(value) {
   return typeof value === 'object' ? ['literal', value] : value;

@@ -54,7 +54,8 @@
         "noUselessElse": "error"
       },
       "performance": {
-        "noDelete": "off"
+        "noDelete": "off",
+        "noDynamicNamespaceImportAccess": "off"
       },
       "suspicious": {
         "noAssignInExpressions": "off",
