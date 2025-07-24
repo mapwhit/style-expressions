@@ -198,7 +198,7 @@ test('exponential function', async t => {
     const f = createFunction(
       {
         type: 'exponential',
-        stops: stops
+        stops
       },
       {
         type: 'number'
