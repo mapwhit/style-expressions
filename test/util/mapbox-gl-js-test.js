@@ -5,13 +5,8 @@ module.exports = {
 };
 
 test.beforeEach(t => {
-  t.assert.notOk = assertNotOk;
   t.assert.equalWithPrecision = assertEqualWithPrecision;
 });
-
-function assertNotOk(cond, ...args) {
-  this.ok(!cond, ...args);
-}
 
 function assertEqualWithPrecision(expected, actual, multiplier, message = `should be equal to within ${multiplier}`) {
   const expectedRounded = Math.round(expected / multiplier) * multiplier;
