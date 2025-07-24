@@ -1,4 +1,4 @@
-const { test } = require('../util/mapbox-gl-js-test');
+const test = require('node:test');
 const { createPropertyExpression } = require('../../lib/expression');
 const definitions = require('../../lib/expression/definitions');
 const v8 = require('../../reference/v8');

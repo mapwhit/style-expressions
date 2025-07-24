@@ -1,6 +1,17 @@
-const { test } = require('../util/mapbox-gl-js-test');
+const test = require('node:test');
 const { createFunction } = require('../../lib/function');
 const { Color, Formatted } = require('../../lib/expression');
+
+test.beforeEach(t => {
+  t.assert.equalWithPrecision = assertEqualWithPrecision;
+});
+
+function assertEqualWithPrecision(expected, actual, multiplier, message = `should be equal to within ${multiplier}`) {
+  const expectedRounded = Math.round(expected / multiplier) * multiplier;
+  const actualRounded = Math.round(actual / multiplier) * multiplier;
+
+  return this.equal(expectedRounded, actualRounded, message);
+}
 
 test('binary search', async t => {
   await t.test('will eventually terminate.', t => {
