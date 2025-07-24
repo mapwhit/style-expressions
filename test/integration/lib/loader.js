@@ -3,7 +3,7 @@ const colors = require('chalk');
 const { readFileSync } = require('fs');
 const { readFile } = require('fs/promises');
 
-module.exports = function () {
+module.exports = () => {
   // /test/integration
   const integrationPath = path.join(__dirname, '..');
   // mapbox-gl-styles -> /test/integration/node_modules/mapbox-gl-styles
@@ -150,7 +150,7 @@ module.exports = function () {
   }
 
   return {
-    localizeURLs: async function (style) {
+    localizeURLs: async style => {
       await localizeStyleURLs(style);
       if (style.metadata?.test?.operations) {
         style.metadata.test.operations.forEach(op => {

@@ -79,7 +79,9 @@ function deepEqual(a, b) {
  * @param {} runExpressionTest - a function that runs a single expression test fixture
  * @returns {undefined} terminates the process when testing is complete
  */
-exports.run = function (implementation, options, runExpressionTest) {
+exports.run = run;
+
+function run(implementation, options, runExpressionTest) {
   const directory = path.join(__dirname, '../expression-tests');
   options.fixtureFilename = 'test.json';
   harness(directory, implementation, options, (fixture, params, done) => {
@@ -187,4 +189,4 @@ exports.run = function (implementation, options, runExpressionTest) {
       done(e);
     }
   });
-};
+}
