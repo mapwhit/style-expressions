@@ -29,8 +29,7 @@
     "json-stringify-pretty-compact": "^1.0.4",
     "lodash.template": "^4.5.0",
     "mapbox-gl-styles": "^2.0.2",
-    "shuffle-seed": "^1.1.6",
-    "sinon": "^21.0.0"
+    "shuffle-seed": "^1.1.6"
   },
   "browser": {
     "assert": "@pirxpilot/nanoassert"
