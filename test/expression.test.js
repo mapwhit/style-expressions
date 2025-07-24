@@ -3,7 +3,6 @@ const { createPropertyExpression } = require('../lib/expression');
 const { isFunction } = require('../lib/function');
 const convertFunction = require('./util/convert');
 const { toString } = require('../lib/expression/types');
-const ignores = require('./ignores.json');
 
 let tests;
 
@@ -11,7 +10,7 @@ if (process.argv[1] === __filename && process.argv.length > 2) {
   tests = process.argv.slice(2);
 }
 
-expressionSuite.run('js', { ignores, tests }, fixture => {
+expressionSuite.run('js', { tests }, fixture => {
   const spec = Object.assign({}, fixture.propertySpec);
 
   if (!spec['property-type']) {
