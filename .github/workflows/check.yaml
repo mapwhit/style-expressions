@@ -9,4 +9,6 @@ jobs:
         with:
           node-version: lts/*
       - run: yarn install
-      - run: make check
+      - env:
+          TEST_REPORTER: tap
+        run: make check
