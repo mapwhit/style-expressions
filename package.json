@@ -26,7 +26,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.0.5",
     "@mapbox/mvt-fixtures": "^3.10.0",
-    "chalk": "^2.3.0",
+    "chalk": "~5",
     "diff": "^8.0.2",
     "json-stringify-pretty-compact": "^1.0.4",
     "lodash.template": "^4.5.0",
