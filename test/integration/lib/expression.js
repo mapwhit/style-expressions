@@ -1,8 +1,8 @@
-const path = require('node:path');
-const harness = require('./harness');
-const diff = require('diff');
-const fs = require('node:fs');
-const compactStringify = require('json-stringify-pretty-compact');
+import fs from 'node:fs';
+import path from 'node:path';
+import { diffJson as diffJSON } from 'diff';
+import compactStringify from 'json-stringify-pretty-compact';
+import harness from './harness.js';
 
 // we have to handle this edge case here because we have test fixtures for this
 // edge case, and we don't want UPDATE=1 to mess with them
@@ -69,6 +69,7 @@ function deepEqual(a, b) {
 
   return true;
 }
+
 /**
  * Run the expression suite.
  *
@@ -79,10 +80,8 @@ function deepEqual(a, b) {
  * @param {} runExpressionTest - a function that runs a single expression test fixture
  * @returns {undefined} terminates the process when testing is complete
  */
-exports.run = run;
-
-function run(implementation, options, runExpressionTest) {
-  const directory = path.join(__dirname, '../expression-tests');
+export function run(implementation, options, runExpressionTest) {
+  const directory = path.join(import.meta.dirname, '../expression-tests');
   options.fixtureFilename = 'test.json';
   harness(directory, implementation, options, (fixture, params, done) => {
     try {
@@ -125,7 +124,7 @@ function run(implementation, options, runExpressionTest) {
       const diffJson = (label, expectedJson, actualJson) => {
         let text = '';
         let html = '';
-        diff.diffJson(expectedJson, actualJson).forEach(hunk => {
+        diffJSON(expectedJson, actualJson).forEach(hunk => {
           if (hunk.added) {
             text += `+ ${hunk.value}`;
             html += `<ins>  ${hunk.value}</ins>`;

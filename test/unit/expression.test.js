@@ -1,7 +1,7 @@
-const test = require('node:test');
-const { createPropertyExpression } = require('../../lib/expression');
-const definitions = require('../../lib/expression/definitions');
-const v8 = require('../../reference/v8');
+import test from 'node:test';
+import definitions from '../../lib/expression/definitions/index.js';
+import { createPropertyExpression } from '../../lib/expression/index.js';
+import v8 from '../../reference/v8.json' with { type: 'json' };
 
 // filter out interal "error" and "filter-*" expressions from definition list
 const filterExpressionRegex = /filter-/;

@@ -7,6 +7,8 @@
     "email": "melitele@furkot.com",
     "url": "https://melitele.me"
   },
+  "type": "module",
+  "exports": "./lib/expression/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mapwhit/style-expressions.git"
@@ -14,7 +16,7 @@
   "license": "BSD-3-Clause",
   "keywords": [
     "style-expressions",
-    ""
+    "map"
   ],
   "dependencies": {
     "@mapbox/unitbezier": "^0.0.1",
@@ -24,9 +26,9 @@
   "devDependencies": {
     "@biomejs/biome": "2.0.5",
     "@mapbox/mvt-fixtures": "^3.10.0",
-    "chalk": "^2.3.0",
+    "chalk": "~5",
     "diff": "^8.0.2",
-    "json-stringify-pretty-compact": "^1.0.4",
+    "json-stringify-pretty-compact": "~4",
     "lodash.template": "^4.5.0",
     "mapbox-gl-styles": "^2.0.2",
     "shuffle-seed": "^1.1.6"
@@ -38,7 +40,6 @@
     "test": "make check"
   },
   "files": [
-    "index.js",
     "lib"
   ]
 }

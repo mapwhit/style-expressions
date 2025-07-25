@@ -1,16 +1,16 @@
-const { expression: expressionSuite } = require('./integration');
-const { createPropertyExpression } = require('../lib/expression');
-const { isFunction } = require('../lib/function');
-const convertFunction = require('./util/convert');
-const { toString } = require('../lib/expression/types');
+import { createPropertyExpression } from '../lib/expression/index.js';
+import { toString } from '../lib/expression/types.js';
+import { isFunction } from '../lib/function/index.js';
+import { expression as expressionSuite } from './integration/index.js';
+import convertFunction from './util/convert.js';
 
 let tests;
 
-if (process.argv[1] === __filename && process.argv.length > 2) {
+if (process.argv[1] === import.meta.filename && process.argv.length > 2) {
   tests = process.argv.slice(2);
 }
 
-expressionSuite.run('js', { tests, testReporter: process.env.TEST_REPORTER }, fixture => {
+expressionSuite('js', { tests, testReporter: process.env.TEST_REPORTER }, fixture => {
   const spec = Object.assign({}, fixture.propertySpec);
 
   if (!spec['property-type']) {
