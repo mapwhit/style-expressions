@@ -1,7 +1,7 @@
-const path = require('path');
+const path = require('node:path');
 const harness = require('./harness');
 const diff = require('diff');
-const fs = require('fs');
+const fs = require('node:fs');
 const compactStringify = require('json-stringify-pretty-compact');
 
 // we have to handle this edge case here because we have test fixtures for this
@@ -76,11 +76,12 @@ function deepEqual(a, b) {
  * deal with implementation-specific test exclusions and fudge-factors
  * @param {Object} options
  * @param {Array<string>} [options.tests] - array of test names to run; tests not in the array will be skipped
- * @param {Array<string>} [options.ignores] - array of test names to ignore.
  * @param {} runExpressionTest - a function that runs a single expression test fixture
  * @returns {undefined} terminates the process when testing is complete
  */
-exports.run = function (implementation, options, runExpressionTest) {
+exports.run = run;
+
+function run(implementation, options, runExpressionTest) {
   const directory = path.join(__dirname, '../expression-tests');
   options.fixtureFilename = 'test.json';
   harness(directory, implementation, options, (fixture, params, done) => {
@@ -188,4 +189,4 @@ exports.run = function (implementation, options, runExpressionTest) {
       done(e);
     }
   });
-};
+}

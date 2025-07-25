@@ -1,4 +1,4 @@
-const { test } = require('../util/mapbox-gl-js-test');
+const test = require('node:test');
 const { createPropertyExpression } = require('../../lib/expression');
 const definitions = require('../../lib/expression/definitions');
 const v8 = require('../../reference/v8');
@@ -45,12 +45,15 @@ test('evaluate expression', async t => {
       }
     });
 
-    t.stub(console, 'warn');
+    t.mock.method(console, 'warn');
 
     t.assert.equal(value.kind, 'source');
 
     t.assert.equal(value.evaluate({}, { properties: { x: 'b' } }), 'b');
     t.assert.equal(value.evaluate({}, { properties: { x: 'invalid' } }), 'a');
-    t.assert.ok(console.warn.calledWith(`Expected value to be one of "a", "b", "c", but found "invalid" instead.`));
+    t.assert.equal(
+      console.warn.mock.calls[0].arguments[0],
+      `Expected value to be one of "a", "b", "c", but found "invalid" instead.`
+    );
   });
 });

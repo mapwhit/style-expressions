@@ -1,4 +1,4 @@
-const { test } = require('../../util/mapbox-gl-js-test');
+const test = require('node:test');
 const colorSpaces = require('../../../lib/util/color_spaces');
 const Color = require('../../../lib/util/color');
 

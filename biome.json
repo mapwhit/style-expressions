@@ -39,12 +39,10 @@
       "correctness": {
         "noUndeclaredVariables": "error",
         "noUnusedFunctionParameters": "off",
-        "noUnusedVariables": "off"
+        "noUnusedVariables": "error"
       },
       "complexity": {
-        "noForEach": "off",
-        "useArrowFunction": "off",
-        "useLiteralKeys": "off"
+        "noForEach": "off"
       },
       "style": {
         "noParameterAssign": "off",
@@ -53,17 +51,27 @@
         "noUnusedTemplateLiteral": "error",
         "useNodejsImportProtocol": "off",
         "useNumberNamespace": "error",
-        "noUselessElse": "error",
-        "useTemplate": "off"
+        "noUselessElse": "error"
       },
       "performance": {
         "noDelete": "off"
       },
       "suspicious": {
         "noAssignInExpressions": "off",
-        "noGlobalIsNan": "off",
         "noShadowRestrictedNames": "off"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["test/**/*.js"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useNodejsImportProtocol": "error"
+          }
+        }
+      }
+    }
+  ]
 }

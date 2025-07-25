@@ -7,7 +7,6 @@ const { promisify } = require('node:util');
 const colors = require('chalk');
 const template = require('lodash.template');
 const shuffler = require('shuffle-seed');
-const { report } = require('node:process');
 
 module.exports = harness;
 
@@ -22,17 +21,11 @@ async function harness(cwd, implementation, options, run) {
   }
 
   let passedCount = 0;
-  let ignoreCount = 0;
-  let ignorePassCount = 0;
   let failedCount = 0;
   let erroredCount = 0;
 
   tests.forEach(test => {
-    if (test.ignored && !test.ok) {
-      ignoreCount++;
-    } else if (test.ignored) {
-      ignorePassCount++;
-    } else if (test.error) {
+    if (test.error) {
       erroredCount++;
     } else if (!test.ok) {
       failedCount++;
@@ -41,22 +34,10 @@ async function harness(cwd, implementation, options, run) {
     }
   });
 
-  const totalCount = passedCount + ignorePassCount + ignoreCount + failedCount + erroredCount;
+  const totalCount = passedCount + failedCount + erroredCount;
 
   if (passedCount > 0) {
     console.log(colors.green('%d passed (%s%)'), passedCount, ((100 * passedCount) / totalCount).toFixed(1));
-  }
-
-  if (ignorePassCount > 0) {
-    console.log(
-      colors.yellow('%d passed but were ignored (%s%)'),
-      ignorePassCount,
-      ((100 * ignorePassCount) / totalCount).toFixed(1)
-    );
-  }
-
-  if (ignoreCount > 0) {
-    console.log(colors.white('%d ignored (%s%)'), ignoreCount, ((100 * ignoreCount) / totalCount).toFixed(1));
   }
 
   if (failedCount > 0) {
@@ -95,7 +76,7 @@ async function runSequence(sequence, runTest, { testReporter }) {
 
 async function generateTestSequence(cwd, implementation, options) {
   const loader = require('./loader')();
-  const { tests = [], ignores = {}, fixtureFilename = 'style.json' } = options;
+  const { tests = [], fixtureFilename = 'style.json' } = options;
 
   const files = fs.glob(`**/${fixtureFilename}`, { cwd });
   const styles = await Promise.all(await Array.fromAsync(files, fixtureToStyle));
@@ -117,7 +98,6 @@ async function generateTestSequence(cwd, implementation, options) {
     const test = (style.metadata.test = Object.assign(
       {
         id,
-        ignored: ignores[`${path.basename(cwd)}/${id}`],
         width: 512,
         height: 512,
         pixelRatio: 1,
@@ -139,7 +119,7 @@ async function generateTestSequence(cwd, implementation, options) {
   }
 
   function filterTest(style) {
-    const { id, ignored } = style.metadata.test;
+    const { id } = style.metadata.test;
 
     if (tests.length !== 0 && !tests.some(t => id.indexOf(t) !== -1)) {
       return false;
@@ -147,11 +127,6 @@ async function generateTestSequence(cwd, implementation, options) {
 
     if (implementation === 'native' && process.env.BUILDTYPE !== 'Debug' && id.match(/^debug\//)) {
       console.log(colors.gray(`* skipped ${id}`));
-      return false;
-    }
-
-    if (/^skip/.test(ignored)) {
-      console.log(colors.gray(`* skipped ${id} (${ignored})`));
       return false;
     }
 
@@ -195,15 +170,7 @@ function verboseReporter(test) {
   }
 
   function end() {
-    if (test.ignored && !test.ok) {
-      test.color = '#9E9E9E';
-      test.status = 'ignored failed';
-      console.log(colors.white(`* ignore ${test.id} (${test.ignored})`));
-    } else if (test.ignored) {
-      test.color = '#E8A408';
-      test.status = 'ignored passed';
-      console.log(colors.yellow(`* ignore ${test.id} (${test.ignored})`));
-    } else if (test.error) {
+    if (test.error) {
       test.color = 'red';
       test.status = 'errored';
       console.log(colors.red(`* errored ${test.id}`));
@@ -228,13 +195,7 @@ function dotReporter(test) {
   function start() {}
 
   function end() {
-    if (test.ignored && !test.ok) {
-      test.status = 'ignored failed';
-      process.stdout.write(colors.white('*'));
-    } else if (test.ignored) {
-      test.status = 'ignored passed';
-      process.stdout.write(colors.yellow('*'));
-    } else if (test.error) {
+    if (test.error) {
       test.color = 'red';
       test.status = 'errored';
       console.log(colors.red(`\n* errored ${test.id}`));

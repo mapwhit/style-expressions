@@ -1,9 +1,9 @@
-const path = require('path');
+const path = require('node:path');
 const colors = require('chalk');
-const { readFileSync } = require('fs');
-const { readFile } = require('fs/promises');
+const { readFileSync } = require('node:fs');
+const { readFile } = require('node:fs/promises');
 
-module.exports = function () {
+module.exports = () => {
   // /test/integration
   const integrationPath = path.join(__dirname, '..');
   // mapbox-gl-styles -> /test/integration/node_modules/mapbox-gl-styles
@@ -110,8 +110,8 @@ module.exports = function () {
       sprite += '@2x';
     }
     const [json, image] = await Promise.all([
-      load(integrationPath, sprite + '.json'),
-      load(integrationPath, sprite + '.png')
+      load(integrationPath, `${sprite}.json`),
+      load(integrationPath, `${sprite}.png`)
     ]);
     return { json: JSON.parse(json.toString()), image: toArrayBuffer(image) };
   }
@@ -150,7 +150,7 @@ module.exports = function () {
   }
 
   return {
-    localizeURLs: async function (style) {
+    localizeURLs: async style => {
       await localizeStyleURLs(style);
       if (style.metadata?.test?.operations) {
         style.metadata.test.operations.forEach(op => {

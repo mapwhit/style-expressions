@@ -1,4 +1,4 @@
-const assert = require('assert');
+const assert = require('node:assert');
 
 module.exports = convertFunction;
 
@@ -75,7 +75,7 @@ function convertZoomAndPropertyFunction(parameters, propertySpec, stops) {
     const zoom = stop[0].zoom;
     if (featureFunctionParameters[zoom] === undefined) {
       featureFunctionParameters[zoom] = {
-        zoom: zoom,
+        zoom,
         type: parameters.type,
         property: parameters.property,
         default: parameters.default
