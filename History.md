@@ -1,4 +1,11 @@
 
+1.0.0 / 2025-07-27
+==================
+
+ * transition to ESM format
+ * upgrade dependencies
+ * simplify tests
+
 0.0.2 / 2025-07-22
 ==================
 
