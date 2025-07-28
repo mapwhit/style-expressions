@@ -31,6 +31,22 @@ test('createPropertyExpression', async t => {
     t.assert.equal(value.length, 1);
     t.assert.equal(value[0].message, '"interpolate" expressions cannot be used with this property');
   });
+
+  await t.test('sets globalStateRefs', () => {
+    const { value } = createPropertyExpression(
+      ['case', ['>', ['global-state', 'stateKey'], 0], 100, ['global-state', 'anotherStateKey']],
+      {
+        type: 'number',
+        'property-type': 'data-driven',
+        expression: {
+          interpolated: false,
+          parameters: ['zoom', 'feature']
+        }
+      }
+    );
+
+    t.assert.deepEqual(value.globalStateRefs, new Set(['stateKey', 'anotherStateKey']));
+  });
 });
 
 test('evaluate expression', async t => {
