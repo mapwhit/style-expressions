@@ -1,4 +1,12 @@
 
+1.1.0 / 2025-07-30
+==================
+
+ * Global state refs (#1120)
+ * `global-state` expression #1044
+ * handle expresssions without spec
+ * add getOwn util
+
 1.0.0 / 2025-07-27
 ==================
 
