@@ -1,6 +1,7 @@
 import test from 'node:test';
 import definitions from '../../lib/expression/definitions/index.js';
-import { createPropertyExpression } from '../../lib/expression/index.js';
+import { createExpression, createPropertyExpression } from '../../lib/expression/index.js';
+import ParsingError from '../../lib/expression/parsing_error.js';
 import v8 from '../../reference/v8.json' with { type: 'json' };
 
 // filter out interal "error" and "filter-*" expressions from definition list
@@ -30,6 +31,22 @@ test('createPropertyExpression', async t => {
     t.assert.equal(value.length, 1);
     t.assert.equal(value[0].message, '"interpolate" expressions cannot be used with this property');
   });
+
+  await t.test('sets globalStateRefs', () => {
+    const { value } = createPropertyExpression(
+      ['case', ['>', ['global-state', 'stateKey'], 0], 100, ['global-state', 'anotherStateKey']],
+      {
+        type: 'number',
+        'property-type': 'data-driven',
+        expression: {
+          interpolated: false,
+          parameters: ['zoom', 'feature']
+        }
+      }
+    );
+
+    t.assert.deepEqual(value.globalStateRefs, new Set(['stateKey', 'anotherStateKey']));
+  });
 });
 
 test('evaluate expression', async t => {
@@ -55,5 +72,34 @@ test('evaluate expression', async t => {
       console.warn.mock.calls[0].arguments[0],
       `Expected value to be one of "a", "b", "c", but found "invalid" instead.`
     );
+  });
+});
+
+test('global-state expression', async t => {
+  await t.test('requires a property argument', () => {
+    const response = createExpression(['global-state']);
+    t.assert.equal(response.result, 'error');
+    t.assert.ok(response.value[0] instanceof ParsingError);
+    t.assert.equal(response.value[0].message, 'Expected 1 argument, but found 0 instead.');
+  });
+  await t.test('requires a string as the property argument', () => {
+    const response = createExpression(['global-state', true]);
+    t.assert.equal(response.result, 'error');
+    t.assert.ok(response.value[0] instanceof ParsingError);
+    t.assert.equal(response.value[0].message, 'Global state property must be string, but found boolean instead.');
+  });
+  await t.test('rejects a second argument', () => {
+    const response = createExpression(['global-state', 'foo', 'bar']);
+    t.assert.equal(response.result, 'error');
+    t.assert.ok(response.value[0] instanceof ParsingError);
+    t.assert.equal(response.value[0].message, 'Expected 1 argument, but found 2 instead.');
+  });
+  await t.test('evaluates a global state property', () => {
+    const response = createExpression(['global-state', 'foo']);
+    if (response.result === 'success') {
+      t.assert.equal(response.value.evaluate({ globalState: { foo: 'bar' }, zoom: 0 }, {}), 'bar');
+    } else {
+      throw new Error('Failed to parse GlobalState expression');
+    }
   });
 });
