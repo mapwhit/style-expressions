@@ -1,0 +1,97 @@
+{
+  "expression": [
+    "to-boolean",
+    [
+      "global-state",
+      "x"
+    ]
+  ],
+  "inputs": [
+    [
+      {},
+      {}
+    ],
+    [
+      {
+        "globalState": {}
+      },
+      {}
+    ],
+    [
+      {
+        "globalState": {
+          "x": false
+        }
+      },
+      {}
+    ],
+    [
+      {
+        "globalState": {
+          "x": null
+        }
+      },
+      {}
+    ],
+    [
+      {
+        "globalState": {
+          "x": ""
+        }
+      },
+      {}
+    ],
+    [
+      {
+        "globalState": {
+          "x": 0
+        }
+      },
+      {}
+    ],
+    [
+      {
+        "globalState": {
+          "x": true
+        }
+      },
+      {}
+    ],
+    [
+      {
+        "globalState": {
+          "x": "some string"
+        }
+      },
+      {}
+    ],
+    [
+      {
+        "globalState": {
+          "x": 5
+        }
+      },
+      {}
+    ]
+  ],
+  "expected": {
+    "compiled": {
+      "result": "success",
+      "isFeatureConstant": true,
+      "isZoomConstant": true,
+      "type": "boolean"
+    },
+    "outputs": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      true,
+      true
+    ],
+    "serialized": ["to-boolean", ["global-state", "x"]]
+  }
+}

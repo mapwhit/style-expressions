@@ -1,0 +1,59 @@
+{
+  "expression": [
+    "case",
+    [
+      "to-boolean",
+      [
+        "global-state",
+        "x"
+      ]
+    ],
+    "visible",
+    "none"
+  ],
+  "inputs": [
+    [
+      {},
+      {}
+    ],
+    [
+      {
+        "globalState": {}
+      },
+      {}
+    ],
+    [
+      {
+        "globalState": {
+          "x": true
+        }
+      },
+      {}
+    ]
+  ],
+  "expected": {
+    "compiled": {
+      "result": "success",
+      "isFeatureConstant": true,
+      "isZoomConstant": true,
+      "type": "string"
+    },
+    "outputs": [
+      "none",
+      "none",
+      "visible"
+    ],
+    "serialized": [
+      "case",
+      [
+        "to-boolean",
+        [
+          "global-state",
+          "x"
+        ]
+      ],
+      "visible",
+      "none"
+    ]
+  }
+}
