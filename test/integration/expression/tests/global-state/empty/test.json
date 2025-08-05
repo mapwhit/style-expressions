@@ -1,7 +1,7 @@
 {
   "expression": ["number", ["global-state", "x"]],
   "inputs": [[{}, {}]],
-  "globalState": {"x": 1},
+  "globalState": {},
   "expected": {
     "compiled": {
       "result": "success",
@@ -9,6 +9,8 @@
       "isZoomConstant": true,
       "type": "number"
     },
-    "outputs": [1]
+    "outputs": [
+      {"error": "Expected value to be of type number, but found null instead."}
+    ]
   }
 }

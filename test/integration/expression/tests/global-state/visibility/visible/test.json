@@ -1,0 +1,21 @@
+{
+  "expression": [
+    "case",
+    ["to-boolean", ["global-state", "x"]],
+    "visible",
+    "none"
+  ],
+  "inputs": [[{}, {}]],
+  "globalState": {
+    "x": true
+  },
+  "expected": {
+    "compiled": {
+      "result": "success",
+      "isFeatureConstant": true,
+      "isZoomConstant": true,
+      "type": "string"
+    },
+    "outputs": ["visible"]
+  }
+}

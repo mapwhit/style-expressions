@@ -1,14 +1,18 @@
 {
-  "expression": ["number", ["global-state", "x"]],
+  "expression": [
+    "case",
+    ["to-boolean", ["global-state", "x"]],
+    "visible",
+    "none"
+  ],
   "inputs": [[{}, {}]],
-  "globalState": {"x": 1},
   "expected": {
     "compiled": {
       "result": "success",
       "isFeatureConstant": true,
       "isZoomConstant": true,
-      "type": "number"
+      "type": "string"
     },
-    "outputs": [1]
+    "outputs": ["none"]
   }
 }
