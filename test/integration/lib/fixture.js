@@ -84,9 +84,9 @@ export function runFixture(fixture) {
   const result = { compiled: {} };
   const expression = (() => {
     if (isFunction(fixture.expression)) {
-      return createPropertyExpression(convertFunction(fixture.expression, spec), spec);
+      return createPropertyExpression(convertFunction(fixture.expression, spec), spec, fixture.globalState);
     }
-    return createPropertyExpression(fixture.expression, spec);
+    return createPropertyExpression(fixture.expression, spec, fixture.globalState);
   })();
 
   result.outputs = evaluateExpression(expression, result.compiled);
