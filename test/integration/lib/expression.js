@@ -81,7 +81,7 @@ function deepEqual(a, b) {
  * @returns {undefined} terminates the process when testing is complete
  */
 export function run(implementation, options, runExpressionTest) {
-  const directory = path.join(import.meta.dirname, '../expression-tests');
+  const directory = path.join(import.meta.dirname, '../expression/tests');
   options.fixtureFilename = 'test.json';
   harness(directory, implementation, options, (fixture, params, done) => {
     try {
