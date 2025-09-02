@@ -79,6 +79,7 @@ expressionSuite('js', { tests, testReporter: process.env.TEST_REPORTER }, fixtur
     }
     return createPropertyExpression(fixture.expression, spec);
   })();
+  expression.value.globalState = fixture.globalState;
 
   result.outputs = evaluateExpression(expression, result.compiled);
 
