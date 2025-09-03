@@ -67,17 +67,21 @@ test('evaluate expression', async t => {
   });
 
   await t.test('global state as expression property', t => {
-    const { value } = createPropertyExpression(['global-state', 'x'], {
-      type: null,
-      default: 42,
-      'property-type': 'data-driven',
-      transition: false
-    });
+    const { value } = createPropertyExpression(
+      ['global-state', 'x'],
+      {
+        type: null,
+        default: 42,
+        'property-type': 'data-driven',
+        transition: false
+      },
+      { x: 5 }
+    );
 
     t.mock.method(console, 'warn');
 
-    value.globalState = { x: 5 };
     t.assert.equal(value.evaluate({ globalState: { x: 15 }, zoom: 10 }), 5);
+    t.assert.equal(value.evaluateWithoutErrorHandling({ globalState: { x: 15 }, zoom: 10 }), 5);
     t.assert.equal(console.warn.mock.callCount(), 0);
   });
 
@@ -92,12 +96,12 @@ test('evaluate expression', async t => {
           interpolated: true,
           parameters: ['zoom']
         }
-      }
+      },
+      { x: 5 }
     );
 
     t.mock.method(console, 'warn');
 
-    value.globalState = { x: 5 };
     t.assert.equal(value.evaluate({ globalState: { x: 15 }, zoom: 10 }), 5);
     t.assert.equal(console.warn.mock.callCount(), 0);
   });
