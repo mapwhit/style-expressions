@@ -135,15 +135,15 @@ async function generateTestSequence(cwd, implementation, options) {
 
 async function writeResults(cwd, options, tests) {
   const p = path.join(cwd, options.recycleMap ? 'index-recycle-map.html' : 'index.html');
-  await pipeline(resuts(), createWriteStream(p));
+  await pipeline(results(), createWriteStream(p));
 
   console.log(`Results at: ${p}`);
 
-  async function* resuts() {
+  async function* results() {
     const resultsTemplate = template(
       await fs.readFile(path.join(import.meta.dirname, '..', 'results.html.tmpl'), 'utf8')
     );
-    const itemTemplate = template(await fs.readFile(path.join(cwd, 'result_item.html.tmpl'), 'utf8'));
+    const itemTemplate = template(await fs.readFile(path.join(cwd, '../result_item.html.tmpl'), 'utf8'));
     const unsuccessful = tests.filter(test => test.status === 'failed' || test.status === 'errored');
     const hasFailedTests = unsuccessful.length > 0;
     const [header, footer] = resultsTemplate({

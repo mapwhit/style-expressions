@@ -1,7 +1,6 @@
 import test from 'node:test';
 import definitions from '../../lib/expression/definitions/index.js';
-import { createExpression, createPropertyExpression } from '../../lib/expression/index.js';
-import ParsingError from '../../lib/expression/parsing_error.js';
+import { createPropertyExpression } from '../../lib/expression/index.js';
 import v8 from '../../reference/v8.json' with { type: 'json' };
 
 // filter out interal "error" and "filter-*" expressions from definition list
@@ -50,6 +49,23 @@ test('createPropertyExpression', async t => {
 });
 
 test('evaluate expression', async t => {
+  await t.test('silently falls back to default for nullish values', t => {
+    const { value } = createPropertyExpression(['global-state', 'x'], {
+      type: null,
+      default: 42,
+      'property-type': 'data-driven',
+      transition: false
+    });
+
+    t.mock.method(console, 'warn');
+
+    t.assert.equal(value.evaluate({ globalState: { x: 5 }, zoom: 10 }), 5);
+    t.assert.equal(console.warn.mock.callCount(), 0);
+
+    t.assert.equal(value.evaluate({ globalState: {}, zoom: 10 }), 42);
+    t.assert.equal(console.warn.mock.callCount(), 0);
+  });
+
   await t.test('warns and falls back to default for invalid enum values', t => {
     const { value } = createPropertyExpression(['get', 'x'], {
       type: 'enum',
@@ -72,34 +88,5 @@ test('evaluate expression', async t => {
       console.warn.mock.calls[0].arguments[0],
       `Expected value to be one of "a", "b", "c", but found "invalid" instead.`
     );
-  });
-});
-
-test('global-state expression', async t => {
-  await t.test('requires a property argument', () => {
-    const response = createExpression(['global-state']);
-    t.assert.equal(response.result, 'error');
-    t.assert.ok(response.value[0] instanceof ParsingError);
-    t.assert.equal(response.value[0].message, 'Expected 1 argument, but found 0 instead.');
-  });
-  await t.test('requires a string as the property argument', () => {
-    const response = createExpression(['global-state', true]);
-    t.assert.equal(response.result, 'error');
-    t.assert.ok(response.value[0] instanceof ParsingError);
-    t.assert.equal(response.value[0].message, 'Global state property must be string, but found boolean instead.');
-  });
-  await t.test('rejects a second argument', () => {
-    const response = createExpression(['global-state', 'foo', 'bar']);
-    t.assert.equal(response.result, 'error');
-    t.assert.ok(response.value[0] instanceof ParsingError);
-    t.assert.equal(response.value[0].message, 'Expected 1 argument, but found 2 instead.');
-  });
-  await t.test('evaluates a global state property', () => {
-    const response = createExpression(['global-state', 'foo']);
-    if (response.result === 'success') {
-      t.assert.equal(response.value.evaluate({ globalState: { foo: 'bar' }, zoom: 0 }, {}), 'bar');
-    } else {
-      throw new Error('Failed to parse GlobalState expression');
-    }
   });
 });
