@@ -1,12 +1,5 @@
 {
-  "expression": [
-    "global-state",
-    [
-      "concat",
-      "pr",
-      "op"
-    ]
-  ],
+  "expression": ["global-state", ["concat", "pr", "op"]],
   "expected": {
     "compiled": {
       "result": "error",

@@ -4,26 +4,11 @@
     "a",
     {},
     "b",
-    {
-      "font-scale": 2
-    },
+    {"font-scale": 2},
     "c",
-    {
-      "text-font": [
-        "literal",
-        [
-          "a",
-          "b"
-        ]
-      ]
-    }
+    {"text-font": ["literal", ["a", "b"]]}
   ],
-  "inputs": [
-    [
-      {},
-      {}
-    ]
-  ],
+  "inputs": [[{}, {}]],
   "expected": {
     "compiled": {
       "result": "success",
@@ -34,21 +19,9 @@
     "outputs": [
       {
         "sections": [
-          {
-            "text": "a",
-            "scale": null,
-            "fontStack": null
-          },
-          {
-            "text": "b",
-            "scale": 2,
-            "fontStack": null
-          },
-          {
-            "text": "c",
-            "scale": null,
-            "fontStack": "a,b"
-          }
+          {"text": "a", "scale": null, "fontStack": null},
+          {"text": "b", "scale": 2, "fontStack": null},
+          {"text": "c", "scale": null, "fontStack": "a,b"}
         ]
       }
     ]

@@ -1,7 +1,5 @@
 {
-  "expression": [
-    "typeof"
-  ],
+  "expression": ["typeof"],
   "expected": {
     "compiled": {
       "result": "error",

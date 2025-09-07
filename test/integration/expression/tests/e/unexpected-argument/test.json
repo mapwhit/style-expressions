@@ -1,8 +1,5 @@
 {
-  "expression": [
-    "e",
-    2
-  ],
+  "expression": ["e", 2],
   "expected": {
     "compiled": {
       "result": "error",

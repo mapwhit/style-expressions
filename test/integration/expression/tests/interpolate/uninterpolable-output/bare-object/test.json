@@ -1,20 +1,12 @@
 {
   "expression": [
     "interpolate",
-    [
-      "linear"
-    ],
-    [
-      "zoom"
-    ],
+    ["linear"],
+    ["zoom"],
     0,
-    {
-      "prop": "foo"
-    },
+    {"prop": "foo"},
     1,
-    {
-      "prop": "bar"
-    }
+    {"prop": "bar"}
   ],
   "expected": {
     "compiled": {

@@ -1,24 +1,12 @@
 {
   "expression": [
     "interpolate-lab",
-    [
-      "linear"
-    ],
-    [
-      "zoom"
-    ],
+    ["linear"],
+    ["zoom"],
     0,
-    [
-      "#f00",
-      "#0f0",
-      "#00f"
-    ],
+    ["#f00", "#0f0", "#00f"],
     1,
-    [
-      "#f99",
-      "#9f9",
-      "#99f"
-    ]
+    ["#f99", "#9f9", "#99f"]
   ],
   "expected": {
     "compiled": {

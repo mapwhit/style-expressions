@@ -1,17 +1,10 @@
 {
-  "expression": [
-    "length",
-    "abc",
-    "def"
-  ],
+  "expression": ["length", "abc", "def"],
   "expected": {
     "compiled": {
       "result": "error",
       "errors": [
-        {
-          "key": "",
-          "error": "Expected 1 argument, but found 2 instead."
-        }
+        {"key": "", "error": "Expected 1 argument, but found 2 instead."}
       ]
     }
   }

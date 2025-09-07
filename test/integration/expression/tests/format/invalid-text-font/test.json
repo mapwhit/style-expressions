@@ -1,14 +1,5 @@
 {
-  "expression": [
-    "format",
-    "a",
-    {
-      "text-font": [
-        "Helvetica",
-        "Arial"
-      ]
-    }
-  ],
+  "expression": ["format", "a", {"text-font": ["Helvetica", "Arial"]}],
   "expected": {
     "compiled": {
       "result": "error",

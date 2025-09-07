@@ -1,15 +1,10 @@
 {
   "expression": [
     "match",
-    [
-      "get",
-      "x"
-    ],
+    ["get", "x"],
     "a",
     "the letter a",
-    [
-      0
-    ],
+    [0],
     "the number 0 in an array",
     "otherwise"
   ],
@@ -17,10 +12,7 @@
     "compiled": {
       "result": "error",
       "errors": [
-        {
-          "key": "[4]",
-          "error": "Expected string but found number instead."
-        }
+        {"key": "[4]", "error": "Expected string but found number instead."}
       ]
     }
   }
