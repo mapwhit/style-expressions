@@ -23,3 +23,8 @@ test-cov: TEST_OPTS += --experimental-test-coverage --test-coverage-include="lib
 test-cov: test
 
 .PHONY: check format lint test test-cov
+
+update-test-fixtures: export UPDATE=1
+update-test-fixtures: test format
+
+.PHONY: update-test-fixtures
