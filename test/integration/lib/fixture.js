@@ -1,17 +1,26 @@
-import { createPropertyExpression } from '../lib/expression/index.js';
-import { toString } from '../lib/expression/types.js';
-import { isFunction } from '../lib/function/index.js';
-import { expression as expressionSuite } from './integration/index.js';
-import convertFunction from './util/convert.js';
+import { createPropertyExpression } from '../../../lib/expression/index.js';
+import { toString } from '../../../lib/expression/types.js';
+import { isFunction } from '../../../lib/function/index.js';
+import convertFunction from '../../util/convert.js';
 
-let tests;
-
-if (process.argv[1] === import.meta.filename && process.argv.length > 2) {
-  tests = process.argv.slice(2);
-}
-
-expressionSuite('js', { tests, testReporter: process.env.TEST_REPORTER }, fixture => {
-  const spec = Object.assign({}, fixture.propertySpec);
+/**
+ * Runs a single integration test fixture, compiling an expression and evaluating it against a set of inputs.
+ *
+ * @param {object} fixture - The test fixture object.
+ * @param {object} fixture.expression - The expression definition to compile and evaluate.
+ * @param {object} [fixture.propertySpec] - Optional property specification for the expression.
+ * @param {Array<Array<any>>} [fixture.inputs] - Optional array of inputs for evaluation.
+ *   Each input is an array where the first element is the zoom level and the second
+ *   is the feature object (with properties and optional id/geometry).
+ * @returns {{compiled: object, outputs: Array<any>}} An object containing the compiled
+ *   expression details and the evaluation outputs.
+ * @returns {object} returns.compiled - Details about the compiled expression, including
+ *   `result`, `errors`, `isFeatureConstant`, `isZoomConstant`, and `type`.
+ * @returns {Array<any>} returns.outputs - An array of evaluation results for each input.
+ *   Each element can be a value or an error object.
+ */
+export function runFixture(fixture) {
+  const spec = { ...fixture.propertySpec };
 
   if (!spec['property-type']) {
     spec['property-type'] = 'data-driven';
@@ -83,4 +92,4 @@ expressionSuite('js', { tests, testReporter: process.env.TEST_REPORTER }, fixtur
   result.outputs = evaluateExpression(expression, result.compiled);
 
   return result;
-});
+}
