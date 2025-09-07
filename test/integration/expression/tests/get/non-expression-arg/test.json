@@ -1,11 +1,5 @@
 {
-  "expression": [
-    "get",
-    "prop",
-    {
-      "prop": 4
-    }
-  ],
+  "expression": ["get", "prop", {"prop": 4}],
   "expected": {
     "compiled": {
       "result": "error",

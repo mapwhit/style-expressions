@@ -1,20 +1,6 @@
 {
-  "expression": [
-    "array",
-    "number",
-    3,
-    [
-      1,
-      2,
-      3
-    ]
-  ],
-  "inputs": [
-    [
-      {},
-      {}
-    ]
-  ],
+  "expression": ["array", "number", 3, [1, 2, 3]],
+  "inputs": [[{}, {}]],
   "expected": {
     "compiled": {
       "result": "error",

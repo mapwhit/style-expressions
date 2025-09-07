@@ -1,19 +1,6 @@
 {
-  "expression": [
-    "array",
-    "string",
-    0.5,
-    [
-      "literal",
-      []
-    ]
-  ],
-  "inputs": [
-    [
-      {},
-      {}
-    ]
-  ],
+  "expression": ["array", "string", 0.5, ["literal", []]],
+  "inputs": [[{}, {}]],
   "expected": {
     "compiled": {
       "result": "error",

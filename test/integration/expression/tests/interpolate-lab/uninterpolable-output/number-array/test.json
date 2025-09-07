@@ -2,110 +2,24 @@
   "propertySpec": {
     "type": "numberArray",
     "property-type": "data-driven",
-    "expression": {
-      "interpolated": true,
-      "parameters": [
-        "zoom",
-        "feature"
-      ]
-    }
+    "expression": {"interpolated": true, "parameters": ["zoom", "feature"]}
   },
   "expression": [
     "interpolate-lab",
-    [
-      "linear"
-    ],
-    [
-      "get",
-      "x"
-    ],
+    ["linear"],
+    ["get", "x"],
     0,
-    [
-      "literal",
-      [
-        0,
-        0
-      ]
-    ],
+    ["literal", [0, 0]],
     10,
-    [
-      "get",
-      "b"
-    ]
+    ["get", "b"]
   ],
   "inputs": [
-    [
-      {},
-      {
-        "properties": {
-          "x": 0,
-          "b": [
-            10,
-            20
-          ]
-        }
-      }
-    ],
-    [
-      {},
-      {
-        "properties": {
-          "x": 5,
-          "b": [
-            10,
-            20
-          ]
-        }
-      }
-    ],
-    [
-      {},
-      {
-        "properties": {
-          "x": 10,
-          "b": [
-            10,
-            20
-          ]
-        }
-      }
-    ],
-    [
-      {},
-      {
-        "properties": {
-          "x": -1234,
-          "b": [
-            10,
-            20
-          ]
-        }
-      }
-    ],
-    [
-      {},
-      {
-        "properties": {
-          "x": 1234,
-          "b": [
-            10,
-            20
-          ]
-        }
-      }
-    ],
-    [
-      {},
-      {
-        "properties": {
-          "x": "abcd",
-          "b": [
-            10,
-            20
-          ]
-        }
-      }
-    ]
+    [{}, {"properties": {"x": 0, "b": [10, 20]}}],
+    [{}, {"properties": {"x": 5, "b": [10, 20]}}],
+    [{}, {"properties": {"x": 10, "b": [10, 20]}}],
+    [{}, {"properties": {"x": -1234, "b": [10, 20]}}],
+    [{}, {"properties": {"x": 1234, "b": [10, 20]}}],
+    [{}, {"properties": {"x": "abcd", "b": [10, 20]}}]
   ],
   "expected": {
     "compiled": {

@@ -1,20 +1,8 @@
 {
   "expression": [
     "interpolate",
-    [
-      "exponential",
-      [
-        "get",
-        "exponent-base"
-      ]
-    ],
-    [
-      "number",
-      [
-        "get",
-        "x"
-      ]
-    ],
+    ["exponential", ["get", "exponent-base"]],
+    ["number", ["get", "x"]],
     1,
     2,
     3,

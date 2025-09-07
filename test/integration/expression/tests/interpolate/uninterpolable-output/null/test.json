@@ -2,36 +2,13 @@
   "propertySpec": {
     "type": "null",
     "property-type": "data-driven",
-    "expression": {
-      "interpolated": true,
-      "parameters": [
-        "zoom",
-        "feature"
-      ]
-    }
+    "expression": {"interpolated": true, "parameters": ["zoom", "feature"]}
   },
-  "expression": [
-    "interpolate",
-    [
-      "linear"
-    ],
-    [
-      "zoom"
-    ],
-    0,
-    null,
-    1,
-    null
-  ],
+  "expression": ["interpolate", ["linear"], ["zoom"], 0, null, 1, null],
   "expected": {
     "compiled": {
       "result": "error",
-      "errors": [
-        {
-          "key": "",
-          "error": "Type null is not interpolatable."
-        }
-      ]
+      "errors": [{"key": "", "error": "Type null is not interpolatable."}]
     }
   }
 }

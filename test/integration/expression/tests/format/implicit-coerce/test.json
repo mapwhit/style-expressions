@@ -1,8 +1,6 @@
 {
   "expression": ["to-string", ["get", "p"]],
-  "propertySpec": {
-    "type": "formatted"
-  },
+  "propertySpec": {"type": "formatted"},
   "inputs": [
     [{}, {"properties": {}}],
     [{}, {"properties": {"p": 0}}],
@@ -16,33 +14,9 @@
       "type": "formatted"
     },
     "outputs": [
-      {
-        "sections": [
-          {
-            "text": "",
-            "scale": null,
-            "fontStack": null
-          }
-        ]
-      },
-      {
-        "sections": [
-          {
-            "text": "0",
-            "scale": null,
-            "fontStack": null
-          }
-        ]
-      },
-      {
-        "sections": [
-          {
-            "text": "a",
-            "scale": null,
-            "fontStack": null
-          }
-        ]
-      }
+      {"sections": [{"text": "", "scale": null, "fontStack": null}]},
+      {"sections": [{"text": "0", "scale": null, "fontStack": null}]},
+      {"sections": [{"text": "a", "scale": null, "fontStack": null}]}
     ]
   }
 }

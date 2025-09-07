@@ -2,34 +2,18 @@
   "propertySpec": {
     "type": "projectionDefinition",
     "property-type": "data-constant",
-    "expression": {
-      "interpolated": true,
-      "parameters": [
-        "zoom"
-      ]
-    }
+    "expression": {"interpolated": true, "parameters": ["zoom"]}
   },
   "expression": [
     "interpolate-lab",
-    [
-      "linear"
-    ],
-    [
-      "zoom"
-    ],
+    ["linear"],
+    ["zoom"],
     0,
     "vertical-perspective",
     10,
     "mercator"
   ],
-  "inputs": [
-    [
-      {
-        "zoom": 5
-      },
-      {}
-    ]
-  ],
+  "inputs": [[{"zoom": 5}, {}]],
   "expected": {
     "compiled": {
       "result": "error",

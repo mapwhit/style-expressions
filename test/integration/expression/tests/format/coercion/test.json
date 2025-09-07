@@ -8,7 +8,7 @@
     ["get", "true"],
     {}
   ],
-  "inputs": [[{}, {"properties": {"a": "a", "1": 1, "true": true}}]],
+  "inputs": [[{}, {"properties": {"1": 1, "a": "a", "true": true}}]],
   "expected": {
     "compiled": {
       "result": "success",
@@ -19,21 +19,9 @@
     "outputs": [
       {
         "sections": [
-          {
-            "text": "a",
-            "scale": null,
-            "fontStack": null
-          },
-          {
-            "text": "1",
-            "scale": null,
-            "fontStack": null
-          },
-          {
-            "text": "true",
-            "scale": null,
-            "fontStack": null
-          }
+          {"text": "a", "scale": null, "fontStack": null},
+          {"text": "1", "scale": null, "fontStack": null},
+          {"text": "true", "scale": null, "fontStack": null}
         ]
       }
     ]

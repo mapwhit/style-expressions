@@ -1,213 +1,93 @@
-import { createWriteStream } from 'node:fs';
-import fs from 'node:fs/promises';
+import { glob, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { pipeline } from 'node:stream/promises';
-import { promisify } from 'node:util';
-import colors from 'chalk';
-import template from 'lodash.template';
-import shuffler from 'shuffle-seed';
-import makeLoader from './loader.js';
+import test from 'node:test';
 
-export default async function harness(cwd, implementation, options, run) {
-  const sequence = await generateTestSequence(cwd, implementation, options);
-  const runTest = promisify(run);
-  const tests = await runSequence(sequence, runTest, { testReporter: options.testReporter });
+/**
+ * Runs integration tests by iterating over test fixtures.
+ * @param {string} cwd - The current working directory for finding fixtures.
+ * @param {function(object): {outputs, compiled}} runFixture - A function that takes a
+ *   fixture object and returns its outputs and compiled result.
+ * @returns {Promise<void>} promise that resolves when all tests are completed
+ */
+export default async function harness(cwd, runFixture) {
+  const files = glob('**/test.json', { cwd });
+  // iterate over files
+  for await (const file of files) {
+    const id = path.dirname(file);
+    const filename = path.resolve(cwd, file);
 
-  if (process.env.UPDATE) {
-    console.log(`Updated ${tests.length} tests.`);
-    process.exit(0);
-  }
+    test(id, { concurrency: true }, async t => {
+      const data = await readFile(filename, 'utf8');
+      const fixture = JSON.parse(data);
+      const { outputs: rawOutputs, compiled } = runFixture(fixture);
+      const outputs = stripPrecision(rawOutputs);
 
-  let passedCount = 0;
-  let failedCount = 0;
-  let erroredCount = 0;
+      if (process.env.UPDATE) {
+        fixture.expected = {
+          compiled,
+          outputs
+        };
 
-  tests.forEach(test => {
-    if (test.error) {
-      erroredCount++;
-    } else if (!test.ok) {
-      failedCount++;
-    } else {
-      passedCount++;
-    }
-  });
-
-  const totalCount = passedCount + failedCount + erroredCount;
-
-  if (passedCount > 0) {
-    console.log(colors.green('%d passed (%s%)'), passedCount, ((100 * passedCount) / totalCount).toFixed(1));
-  }
-
-  if (failedCount > 0) {
-    console.log(colors.red('%d failed (%s%)'), failedCount, ((100 * failedCount) / totalCount).toFixed(1));
-  }
-
-  if (erroredCount > 0) {
-    console.log(colors.red('%d errored (%s%)'), erroredCount, ((100 * erroredCount) / totalCount).toFixed(1));
-  }
-
-  await writeResults(cwd, options, tests);
-
-  if (failedCount > 0 || erroredCount > 0) {
-    process.exit(1);
-  }
-}
-
-async function runSequence(sequence, runTest, { testReporter }) {
-  const tests = [];
-
-  for (const style of sequence) {
-    const test = style.metadata.test;
-    const reporter = testReporter === 'dot' ? dotReporter(test) : verboseReporter(test);
-    try {
-      reporter.start();
-      await runTest(style, test);
-    } catch (error) {
-      test.error = error;
-    } finally {
-      reporter.end();
-    }
-    tests.push(test);
-  }
-  return tests;
-}
-
-async function generateTestSequence(cwd, implementation, options) {
-  const loader = makeLoader();
-  const { tests = [], fixtureFilename = 'style.json' } = options;
-
-  const files = fs.glob(`**/${fixtureFilename}`, { cwd });
-  const styles = await Promise.all(await Array.fromAsync(files, fixtureToStyle));
-  const sequence = styles.filter(filterTest);
-
-  if (!options.shuffle) {
-    return sequence;
-  }
-  console.log(colors.white('* shuffle seed: ') + colors.bold(`${options.seed}`));
-  return shuffler.shuffle(sequence, options.seed);
-
-  async function fixtureToStyle(fixture) {
-    const id = path.dirname(fixture);
-    const styleText = await fs.readFile(path.join(cwd, fixture));
-    const style = JSON.parse(styleText);
-
-    await loader.localizeURLs(style);
-
-    style.metadata ??= style.metadata || {};
-    const test = (style.metadata.test = Object.assign(
-      {
-        id,
-        width: 512,
-        height: 512,
-        pixelRatio: 1,
-        recycleMap: options.recycleMap || false,
-        allowed: 0.00015
-      },
-      style.metadata.test
-    ));
-
-    if ('diff' in test) {
-      if (typeof test.diff === 'number') {
-        test.allowed = test.diff;
-      } else if (implementation in test.diff) {
-        test.allowed = test.diff[implementation];
+        await writeFile(filename, `${stringify(fixture, null, 2)}\n`);
+        return;
       }
-    }
 
-    return style;
-  }
-
-  function filterTest(style) {
-    const { id } = style.metadata.test;
-
-    if (tests.length !== 0 && !tests.some(t => id.indexOf(t) !== -1)) {
-      return false;
-    }
-
-    if (implementation === 'native' && process.env.BUILDTYPE !== 'Debug' && id.match(/^debug\//)) {
-      console.log(colors.gray(`* skipped ${id}`));
-      return false;
-    }
-
-    return true;
+      const { expected } = fixture;
+      t.assert.deepStrictEqual(compiled, expected.compiled, 'compiled should be equal');
+      t.assert.deepStrictEqual(outputs, expected.outputs, 'outputs should be equal');
+    });
   }
 }
 
-async function writeResults(cwd, options, tests) {
-  const p = path.join(cwd, options.recycleMap ? 'index-recycle-map.html' : 'index.html');
-  await pipeline(results(), createWriteStream(p));
-
-  console.log(`Results at: ${p}`);
-
-  async function* results() {
-    const resultsTemplate = template(
-      await fs.readFile(path.join(import.meta.dirname, '..', 'results.html.tmpl'), 'utf8')
-    );
-    const itemTemplate = template(await fs.readFile(path.join(cwd, '../result_item.html.tmpl'), 'utf8'));
-    const unsuccessful = tests.filter(test => test.status === 'failed' || test.status === 'errored');
-    const hasFailedTests = unsuccessful.length > 0;
-    const [header, footer] = resultsTemplate({
-      unsuccessful,
-      tests,
-      shuffle: options.shuffle,
-      seed: options.seed
-    }).split('<!-- results go here -->');
-    yield header;
-    for (const r of tests) {
-      yield itemTemplate({ r, hasFailedTests });
-    }
-    yield footer;
+/**
+ * Stringifies a JavaScript value into a JSON string, handling Unicode line and paragraph
+ * separators.
+ *
+ * This is necessary because JSON.stringify does not escape U+2028 (line separator) or
+ * U+2029 (paragraph separator), which can cause issues if the output is embedded in HTML.
+ *
+ * @param {any} v - The value to stringify.
+ * @returns {string} The JSON string representation of the value.
+ */
+function stringify(v) {
+  let s = JSON.stringify(v);
+  if (s.indexOf('\u2028') >= 0) {
+    s = s.replace(/\u2028/g, '\\u2028');
   }
+  if (s.indexOf('\u2029') >= 0) {
+    s = s.replace(/\u2029/g, '\\u2029');
+  }
+  return s;
 }
 
-function verboseReporter(test) {
-  return {
-    start,
-    end
-  };
+const decimalSigFigs = 6;
 
-  function start() {
-    console.log(colors.blue(`* testing ${test.id}`));
-  }
-
-  function end() {
-    if (test.error) {
-      test.color = 'red';
-      test.status = 'errored';
-      console.log(colors.red(`* errored ${test.id}`));
-    } else if (!test.ok) {
-      test.color = 'red';
-      test.status = 'failed';
-      console.log(colors.red(`* failed ${test.id}`));
-    } else {
-      test.color = 'green';
-      test.status = 'passed';
-      console.log(colors.green(`* passed ${test.id}`));
+/**
+ * Strips a number down to a specified number of decimal significant figures,
+ * or recursively processes arrays and objects. This is used to normalize
+ * floating-point output for comparisons in tests.
+ *
+ * @param {number|object|Array<any>|null} x - The value to strip precision from.
+ * @returns {number|object|Array<any>|null} The value with precision stripped.
+ */
+function stripPrecision(x) {
+  // strips down to 6 decimal sigfigs but stops at decimal point
+  if (typeof x === 'number') {
+    if (x === 0) {
+      return x;
     }
+    const multiplier = 10 ** Math.max(0, decimalSigFigs - Math.ceil(Math.log10(Math.abs(x))));
+    // We strip precision twice in a row here to avoid cases where
+    // stripping an already stripped number will modify its value
+    // due to bad floating point precision luck
+    // eg `Math.floor(8.16598 * 100000) / 100000` -> 8.16597
+    const firstStrip = Math.floor(x * multiplier) / multiplier;
+    return Math.floor(firstStrip * multiplier) / multiplier;
   }
+  if (x == null || typeof x !== 'object') {
+    return x;
+  }
+  return Array.isArray(x)
+    ? x.map(stripPrecision)
+    : Object.fromEntries(Object.entries(x).map(p => [p[0], stripPrecision(p[1])]));
 }
-
-function dotReporter(test) {
-  return {
-    start,
-    end
-  };
-
-  function start() {}
-
-  function end() {
-    if (test.error) {
-      test.color = 'red';
-      test.status = 'errored';
-      console.log(colors.red(`\n* errored ${test.id}`));
-    } else if (!test.ok) {
-      test.color = 'red';
-      test.status = 'failed';
-      console.log(colors.red(`\n* failed ${test.id}`));
-    } else {
-      test.color = 'green';
-      test.status = 'passed';
-      process.stdout.write(colors.green('.'));
-    }
-  }
-} // end of dotReporter

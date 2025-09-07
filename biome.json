@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.0.5/schema.json",
+  "$schema": "node_modules/@biomejs/biome/configuration_schema.json",
   "assist": {
     "actions": {
       "source": {
@@ -13,7 +13,11 @@
     "useIgnoreFile": true
   },
   "files": {
-    "ignoreUnknown": true
+    "ignoreUnknown": true,
+    "includes": [
+      "**",
+      "!reference/**/*.json"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -29,7 +33,8 @@
   },
   "json": {
     "formatter": {
-      "enabled": false
+      "enabled": true,
+      "expand": "always"
     }
   },
   "linter": {
@@ -65,12 +70,27 @@
   },
   "overrides": [
     {
-      "includes": ["test/**/*.js"],
+      "includes": [
+        "test/**/*.js"
+      ],
       "linter": {
         "rules": {
           "style": {
             "useNodejsImportProtocol": "error"
           }
+        }
+      }
+    },
+    {
+      "includes": [
+        "test/integration/**/test.json"
+      ],
+      "json": {
+        "formatter": {
+          "enabled": true,
+          "expand": "auto",
+          "bracketSpacing": false,
+          "lineWidth": 80
         }
       }
     }
