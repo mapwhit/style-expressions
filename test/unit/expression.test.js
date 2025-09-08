@@ -66,6 +66,45 @@ test('evaluate expression', async t => {
     t.assert.equal(console.warn.mock.callCount(), 0);
   });
 
+  await t.test('global state as expression property', t => {
+    const { value } = createPropertyExpression(
+      ['global-state', 'x'],
+      {
+        type: null,
+        default: 42,
+        'property-type': 'data-driven',
+        transition: false
+      },
+      { x: 5 }
+    );
+
+    t.mock.method(console, 'warn');
+
+    t.assert.equal(value.evaluate({ globalState: { x: 15 }, zoom: 10 }), 5);
+    t.assert.equal(console.warn.mock.callCount(), 0);
+  });
+
+  await t.test('global state as expression property of zoom dependent expression', t => {
+    const { value } = createPropertyExpression(
+      ['interpolate', ['linear'], ['zoom'], 10, ['global-state', 'x'], 20, 50],
+      {
+        type: 'number',
+        default: 42,
+        'property-type': 'data-driven',
+        expression: {
+          interpolated: true,
+          parameters: ['zoom']
+        }
+      },
+      { x: 5 }
+    );
+
+    t.mock.method(console, 'warn');
+
+    t.assert.equal(value.evaluate({ globalState: { x: 15 }, zoom: 10 }), 5);
+    t.assert.equal(console.warn.mock.callCount(), 0);
+  });
+
   await t.test('warns and falls back to default for invalid enum values', t => {
     const { value } = createPropertyExpression(['get', 'x'], {
       type: 'enum',
